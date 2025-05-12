@@ -1,0 +1,13 @@
+appId: com.demoreactnative
+---
+- launchApp
+- tapOn:
+    id: inputEmail
+- inputText: "demo_agent"
+- tapOn:
+    id: inputPassword
+- inputText: "password"
+- tapOn:
+    id: buttonLogin
+- assertVisible : "Login Info"
+- tapOn: "OK"

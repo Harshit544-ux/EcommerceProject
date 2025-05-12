@@ -1,0 +1,59 @@
+appId: com.demoreactnative
+env:
+  FIRST_NAME: "Harshit"
+  LAST_NAME: "Srivastava"
+  EMAIL: "harshitsri08@gmail.com"
+  COMPANY: "RisurgeTech.in"
+  ADDRESS: "Hyderabad"
+
+---
+- launchApp
+# Test First Name input
+- tapOn:
+    id: "inputFirstName"
+- inputText: ${FIRST_NAME}
+- hideKeyboard
+
+# Test Last Name input
+- tapOn:
+    id: "inputLastName"
+- inputText: ${LAST_NAME}
+- hideKeyboard
+
+# Test Email input
+- tapOn:
+    id: "inputEmail"
+- inputText: ${EMAIL}
+- hideKeyboard
+
+# Test Company input
+- tapOn:
+    id: "inputCompany"
+- inputText: ${COMPANY}
+- hideKeyboard
+
+# Test Address input
+- tapOn:
+    id: "inputAddress"
+- inputText: ${ADDRESS}
+- hideKeyboard
+
+# Submit registration
+- tapOn:
+    id: "registerButton"
+
+# Verify the alert appears with correct information
+- assertVisible: "Hello Harshit"
+# - tapOn:
+#     text: "OK"
+
+# - waitFor:
+#     text: "Popular Medicine"
+
+# - scrollUntilVisible:
+#     element: "Medicine 19"
+#     direction: DOWN
+#     timeout: 10000
+
+# # Optionally tap on Medicine 19
+# - tapOn: "Medicine 19"
