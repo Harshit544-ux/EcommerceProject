@@ -1,44 +1,39 @@
 import React from 'react';
-import CardScreen from './Component/CardScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CardDetail from './Component/CardDetail';
-import Flexbox from './Css/flexbox';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import WelcomeScreen from './Screen/WelcomeScreen';
-import { StyleSheet } from 'react-native';
+import LoginScreen from './Screen/LoginScreen';
+import RegisterScreen from './Screen/Register';
+// import RegisterScreen from './Screen/RegisterScreen';
 
-type RootStackParamList = {
-  CardScreen: undefined;
-  CardDetail: { card: { id: number; image: string; description: string } };
-};
+// Define the same type across your app
+// export type RootStackParamList = {
+//   WelcomeScreen: undefined;
+//   LoginScreen: undefined;
+//   RegisterScreen: undefined;
+// };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    // Handles navigation between different screens in the application
-    // <NavigationContainer>
-    //   <Stack.Navigator>
-    //     <Stack.Screen name="CardScreen" component={CardScreen} />
-    //     <Stack.Screen name="CardDetail" component={CardDetail} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
-    <>
-      {/* <SafeAreaView style={{flex:1}}>
-        <Flexbox />
-      </SafeAreaView> */}
-     <SafeAreaView style={{flex:1}}>
-      <WelcomeScreen/>
-      </SafeAreaView>
-  
+    <NavigationContainer>
+      <Stack.Navigator 
+        initialRouteName="WelcomeScreen"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen}/>
 
-    </>
-
+        {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
 export default App;
+
 
 
 
