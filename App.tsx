@@ -4,6 +4,16 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './Screen/WelcomeScreen';
 import LoginScreen from './Screen/LoginScreen';
 import RegisterScreen from './Screen/Register';
+import CardDetailScreen from './Screen/CardDetailScreen';
+import CardList from './Screen/CardScreen';
+import { RootStackParamList } from './types/navigation';
+import { Text } from 'react-native-gesture-handler';
+import LocationScreen from './Screen/LocationScreen';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+
+
+
 // import RegisterScreen from './Screen/RegisterScreen';
 
 // Define the same type across your app
@@ -13,10 +23,11 @@ import RegisterScreen from './Screen/Register';
 //   RegisterScreen: undefined;
 // };
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator 
         initialRouteName="WelcomeScreen"
@@ -25,10 +36,18 @@ const App = () => {
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen}/>
-
-        {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
+        <Stack.Screen name="CardDetailScreen" component={CardDetailScreen}/>
+        <Stack.Screen name="CardScreen" component={CardList}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
+
+
+
+
+      // <LocationScreen/>
+  
+
   );
 };
 
