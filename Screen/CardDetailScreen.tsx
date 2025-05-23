@@ -12,9 +12,11 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ShoppingIcon from 'react-native-vector-icons/AntDesign';
+import PlusIcon from 'react-native-vector-icons/AntDesign';
+import MinusIcon from 'react-native-vector-icons/AntDesign';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import CustomButton from '../Component/CustomButton';
-import { Alert } from 'react-native';
 import ImageCarousel from '../Component/ImageCarousel';
 import GrowthIcon from 'react-native-vector-icons/MaterialIcons';
 import DateIcon from 'react-native-vector-icons/Fontisto';
@@ -23,30 +25,50 @@ import Star from 'react-native-star-view';
 import Bar from 'react-native-progress/Bar';
 import StarIcon from 'react-native-vector-icons/AntDesign';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../src/slices/cartSlice';
+import { addToCart, increaseQuantity, decreaseQuantity } from '../src/slices/cartSlice';
+import Share from 'react-native-share';
+import Snackbar from 'react-native-snackbar';
+
 
 const { width } = Dimensions.get('window');
-
 type Props = NativeStackScreenProps<RootStackParamList, 'CardDetailScreen'>;
 
 const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const cartCount = useSelector((state: any) => state.cart.cartCount);
-
+  const cartCount = useSelector((state: any) =>
+    state.cart.items.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0)
+  );
   const { cardData } = route.params;
+  const cartItem = useSelector((state: any) =>
+    state.cart.items.find((item: any) => item.id === cardData.id)
+  );
+  const quantity = cartItem ? cartItem.quantity : 0;
   const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
 
+  const CustomShare = async () => {
+    const message = `🔥 Product: ${cardData.title}\n💰 Price: ${cardData.price}\n📅 Expiry: March 2028`;
+    const shareOptions = {
+      title: `Check out : ${cardData.title}!`,
+      message: message,
+    }
+    try {
+      const shareResponse = await Share.open(shareOptions);
+      console.log("Share response", shareResponse);
+    }
+    catch (error) {
+      console.log("Error sharing product", error);
+    }
+
+  }
   const toggleAccordion = () => {
     Animated.timing(animation, {
       toValue: expanded ? 0 : 1,
       duration: 300,
       useNativeDriver: false,
     }).start();
-
     setExpanded(!expanded);
   };
-
   const heightInterpolation = animation.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 100],
@@ -55,9 +77,7 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
   });
-
-
-
+  // Format images for the carousel
   const formattedImages = cardData.images?.map((img: string, index: number) => ({
     id: index + 1,
     image: img,
@@ -72,99 +92,196 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         </TouchableOpacity>
         <View style={styles.headerIcons}>
           <TouchableOpacity style={styles.iconButton}>
-            <Icon name="share" size={20} color="#000" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
             <Icon name="heart-o" size={20} color="#000" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Icon name="shopping-cart" size={20} color="#000" />
+          <TouchableOpacity style={styles.iconButton}
+            onPress={() => navigation.navigate('CartItemsScreen')}
+          >
+            <ShoppingIcon name="shoppingcart" size={20} />
             {cartCount > 0 && (
-              <View style={{
-                position: 'absolute',
-                right: -6,
-                top: -6,
-                backgroundColor: 'red',
-                borderRadius: 8,
-                paddingHorizontal: 5,
-                paddingVertical: 1,
-                minWidth: 16,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold' }}>{cartCount}</Text>
+              <View
+                style={{
+                  position: 'absolute',
+                  right: -9,
+                  top: -10,
+                  backgroundColor: 'red',
+                  borderRadius: 10,
+                  minWidth: 18,
+                  height: 18,
+                  paddingHorizontal: 4,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontSize: 12,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    includeFontPadding: false,
+                  }}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                >
+                  {cartCount}
+                </Text>
               </View>
             )}
           </TouchableOpacity>
         </View>
       </View>
-
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Product Image */}
         <View style={styles.imageContainer}>
-          {/* <Image source={{ uri: cardData.image }} style={styles.image} resizeMode="cover" /> */}
-
           <ImageCarousel
-
             images={formattedImages}
             autoPlay={false}
             scrollAnimationDuration={0}
             loop={false}
           />
-
+          <TouchableOpacity style={styles.floatingShareButton} onPress={CustomShare}>
+            <Icon name="share" size={20} color="#3187A2" opacity={0.9} />
+          </TouchableOpacity>
         </View>
-
         <View style={styles.productGrowthContainer}>
           <GrowthIcon name="auto-graph" size={24} color="green" />
-
           <Text style={{ color: "black", fontSize: 16, fontFamily: "Poppins-Medium", justifyContent: "center", alignItems: "center" }}>
             <Text style={{ fontWeight: 'bold' }}>800</Text> people ordered this in last 30 days
           </Text>
-
         </View>
-
-
 
         {/* Product Info */}
         <View style={styles.infoContainer}>
           <Text style={styles.title}>{cardData.title}</Text>
+          <Text style={styles.labels}>{cardData.label}</Text>
+          {/* Rating Section */}
           <View style={styles.ratingContainer}>
             <View style={styles.ratingBox}>
               <Text style={styles.ratingText}>{cardData.rating} ★</Text>
             </View>
             <Text style={styles.reviewsText}>1,234 Reviews</Text>
           </View>
-
-          {/* Price Section */}
           <View style={styles.priceContainer}>
-            <Text style={styles.price}>{cardData.price}</Text>
-            <Text style={styles.originalPrice}>{cardData.originalPrice}</Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 3, }}>
+              <Text style={{ color: "#666" }}>MRP</Text>
+              <Text style={styles.originalPrice}> {cardData.originalPrice}</Text>
+            </View>
             <Text style={styles.discount}>70% off</Text>
           </View>
 
+          {/* <View style={{ flexDirection: "row", alignItems: "center", gap: 8, justifyContent: "space-between", marginVertical: 10 }}>
+            <Text style={[styles.price, { flex: 1 }]}>{cardData.price}</Text>
+            <View style={[styles.buttonContainer, { flex: 0, marginBottom: 0 }]}>
+              {quantity == 0 ? (
+                <CustomButton
+                  text="ADD"
+                  isActive={true}
+                  style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1 }]}
+                  textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
+                  onPress={() => {
+                    dispatch(addToCart(cardData));
+                    // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
+                  }} />
+              ) : (
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                  <Text style={{ fontSize: 16, fontFamily: "Poppins-Medium" }}>{quantity}</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                    <CustomButton
+                      text="-"
+                      isActive={true}
+                      style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1 }]}
+                      textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
+                      onPress={() => {
+                        dispatch(addToCart(cardData.id));
+                        // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
+                      }} />
+                    <CustomButton
+                      text="+"
+                      isActive={true}
+                      style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1 }]}
+                      textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
+                      onPress={() => {
+                        dispatch(addToCart(cardData.id));
+                        // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
+                      }} />
+                  </View>
+
+                  
+              {quantity > 0 && (
+                <Text style={{ color: "#222", fontWeight: "bold", marginTop: 4 }}>
+                  Total: ₹{Number(cardData.price.replace(/[^\d]/g, "")) * quantity}
+                </Text>
+              )}
+
+                </View>
+              )}
+        
+            </View>
+          </View> */}
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8, justifyContent: "space-between", marginVertical: 10 }}>
+            {quantity > 0 && (
+              <Text style={[styles.price, { flex: 1 }]}>₹{Number(cardData.price.replace(/[^\d]/g, "")) * quantity}</Text>
+            )}
+            <View style={[styles.buttonContainer, { flex: 0, marginBottom: 0 }]}>
+              {quantity == 0 ? (
+                <CustomButton
+                  text="ADD"
+                  isActive={true}
+                  style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1 }]}
+                  textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
+                  onPress={() => {
+                    dispatch(addToCart(cardData));
+                    Snackbar.show({
+                      text: 'Added to Cart',
+                      duration: Snackbar.LENGTH_SHORT,
+                      backgroundColor: '#1F41BB',
+                      textColor: '#fff',
+                    })
+                  }}
+                />
+              ) : (
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8, backgroundColor: "#1F41BB", borderRadius: 5, paddingVertical: 5, paddingHorizontal: 10 }}>
+                  <TouchableOpacity onPress={() => dispatch(decreaseQuantity(cardData.id))}>
+                    <MinusIcon name="minus" size={20} color="white" />
+                    {/* <Text style={{ fontSize: 20, color: "#3187A2", fontWeight: "bold" }}>-</Text> */}
+                  </TouchableOpacity>
+                  <Text style={{ fontSize: 16, fontFamily: "Poppins-Medium", color: "white" }}>{quantity}</Text>
+                  <TouchableOpacity onPress={() => dispatch(increaseQuantity(cardData.id))}>
+                    {/* <Text style={{ fontSize: 20, color: "#3187A2", fontWeight: "bold" }}>+</Text> */}
+                    <PlusIcon name="plus" size={20} color="white" />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          </View>
+          {/* <CustomButton
+                text="ADD"
+                isActive={true}
+                style={[
+                  styles.addToCartButton,
+                  { borderColor: "#3187A2", borderWidth: 1, width: 120, paddingVertical: 10, paddingHorizontal: 0 }
+                ]}
+                textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
+                onPress={() => {
+                  dispatch(addToCart(cardData));
+                  // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
+                }}
+              /> */}
           {/* Buttons */}
-          <View style={styles.buttonContainer}>
-            {/* <TouchableOpacity style={[styles.button, styles.addToCartButton]}>
-              <Icon name="shopping-cart" size={20} color="#fff" />
-              <Text style={styles.buttonText}>ADD TO CART</Text>
-            </TouchableOpacity> */}
+          {/* <View style={styles.buttonContainer}>
+
             <CustomButton
-              text="ADD TO CART"
+              text="ADD"
               isActive={true}
-              style={[styles.button, styles.addToCartButton]}
+              style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1 }]}
+              textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
               onPress={() => {
                 dispatch(addToCart(cardData));
-                Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
+                // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
               }} />
-            {/* <TouchableOpacity style={[styles.button, styles.buyNowButton]}>
-              <Text style={styles.buttonText}>BUY NOW</Text>
-            </TouchableOpacity> */}
-            <CustomButton
-              text="BUY NOW"
-              isActive={true}
-              style={[styles.button, styles.buyNowButton]}
-              onPress={() => Alert.alert('Buy Now')} />
-          </View>
+
+          </View> */}
 
           {/* Expiry Date */}
           <View
@@ -209,25 +326,21 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
                 </Animated.View>
               </TouchableOpacity>
             </View>
-
             <Animated.View style={[styles.body, { height: heightInterpolation }]}>
               <View style={styles.detailWrapper}>
                 <View style={styles.row}>
                   <Text style={styles.label}>Classification:</Text>
                   <Text style={styles.value}>Analgesic / Antipyretic</Text>
                 </View>
-
                 <View style={styles.row}>
                   <Text style={styles.label}>Recommended For:</Text>
                   <Text style={styles.value}>Fever, Mild to Moderate Pain</Text>
                 </View>
-
                 <View style={styles.row}>
                   <Text style={styles.label}>Quantity:</Text>
                   <Text style={styles.value}>500 mg (Tablet) / 100 ml (Syrup)</Text>
                 </View>
               </View>
-
             </Animated.View>
           </View>
 
@@ -263,11 +376,8 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
                   <Text>88 rating and 26</Text>
                   <Text style={{ marginLeft: 4 }}>reviews</Text>
                 </View>
-
-
               </View>
               <View style={styles.verticalDivider} />
-
               <View style={{ alignItems: 'center', gap: 4 }}>
                 {[5, 4, 3, 2].map((rating, index) => {
                   const progressValues = [0.7, 0.5, 0.3, 0.2];
@@ -288,10 +398,9 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
                         height={10}
                       />
                     </View>
-                  );
+                  )
                 })}
               </View>
-
             </View>
           </View>
         </View>
@@ -320,15 +429,17 @@ const styles = StyleSheet.create({
   headerIcons: {
     flexDirection: 'row',
     alignItems: 'center',
+    position: "relative",
   },
   iconButton: {
-    marginLeft: 20,
+    marginHorizontal: 8,
   },
   imageContainer: {
     width: width,
     height: 300,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
   // image: {
   //   width: '100%',
@@ -366,12 +477,13 @@ const styles = StyleSheet.create({
   priceContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 5,
   },
   price: {
     fontSize: 24,
     fontWeight: 'bold',
     marginRight: 8,
+    marginBottom: 8
   },
   originalPrice: {
     fontSize: 16,
@@ -389,6 +501,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+    // backgroundColor:"black",
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -397,18 +510,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   addToCartButton: {
-    backgroundColor: '#ff9f00',
+    backgroundColor: '#DEEFF5',
+    borderColor: '#7CC1D7',
   },
-  buyNowButton: {
-    backgroundColor: '#fb641b',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    marginLeft: 8,
-  },
+  // buyNowButton: {
+  //   backgroundColor: '#fb641b',
+  // },
+  // buttonText: {
+  //   color: 'black',
+  //   fontWeight: 'bold',
+  //   marginLeft: 8,
+  // },
   detailsContainer: {
-
     borderWidth: 1,
     borderColor: '#eee',
     borderRadius: 6,
@@ -417,9 +530,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 1,
     shadowColor: '#000',
-
-
-
   },
   detailsHeader: {
     flexDirection: 'row',
@@ -436,7 +546,6 @@ const styles = StyleSheet.create({
     color: '#666',
     lineHeight: 20,
   },
-
   productGrowthContainer: {
     height: 50,
     width: '100%',
@@ -458,7 +567,6 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     padding: 8,
   },
-
   detailWrapper: {
     padding: 10,
     backgroundColor: '#fff',
@@ -476,8 +584,6 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#555',
   },
-
-
   highlightsContainer: {
     marginTop: 20,
     padding: 10,
@@ -511,7 +617,6 @@ const styles = StyleSheet.create({
     // backgroundColor: 'blue',
     // borderRadius: 8,
     height: 210,
-
     borderWidth: 1,
     borderColor: '#eee',
     borderRadius: 6,
@@ -520,8 +625,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 1,
     shadowColor: '#000',
-
-
   },
   reviewtitle: {
     fontSize: 20,
@@ -530,7 +633,6 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     color: "black",
     fontWeight: "semibold",
-
   },
   reviewBox: {
     flexDirection: 'row',
@@ -550,7 +652,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0',
     marginHorizontal: 16,
   },
-
+  labels: {
+    backgroundColor: "#D3D3D3",
+    color: "#36454F",
+    padding: 4,
+    // marginVertical:9,
+    marginBottom: 10,
+    marginTop: 5,
+    width: 120,
+    textAlign: "center",
+    borderRadius: 15,
+  },
+  floatingShareButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 8,
+    elevation: 2,
+    zIndex: 10,
+    borderWidth: 1,
+    borderColor: '#eee',
+  },
 });
 
 export default CardDetailScreen;

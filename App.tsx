@@ -7,11 +7,13 @@ import RegisterScreen from './Screen/Register';
 import CardDetailScreen from './Screen/CardDetailScreen';
 import CardList from './Screen/CardScreen';
 import { RootStackParamList } from './types/navigation';
-import { Text } from 'react-native-gesture-handler';
 import LocationScreen from './Screen/LocationScreen';
 import { Provider } from 'react-redux';
 import { store } from './src/store';
-
+import CartItemScreen from './Screen/CartItemsScreen';
+import { Text } from 'react-native-gesture-handler';
+import AccountScreen from './Screen/AccountScreen';
+import AccountItem from './Component/AccountItem';
 
 
 // import RegisterScreen from './Screen/RegisterScreen';
@@ -38,25 +40,17 @@ const App = () => {
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="CardDetailScreen" component={CardDetailScreen}/>
         <Stack.Screen name="CardScreen" component={CardList}/>
+        <Stack.Screen name="CartItemsScreen" component={CartItemScreen}/>
+        <Stack.Screen name='AccountScreen' component={AccountScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>
-
-
-
-
-      // <LocationScreen/>
+     
+    //  <AccountScreen/>
   
-
+      // <LocationScreen/>
   );
 };
 
 export default App;
-
-
-
-
-
-
-
 

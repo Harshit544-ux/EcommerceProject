@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View, Dimensions, TextInput, SafeAreaView, StatusBar, Text, TouchableOpacity, Pressable, ScrollView } from 'react-native';
+import { FlatList, StyleSheet, View, Dimensions, TextInput, SafeAreaView, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Card from '../Component/Card';
 import { cardData } from '../MockData/CardData';
 import SearchIcon from 'react-native-vector-icons/FontAwesome';
@@ -13,16 +13,16 @@ import LocationPinIcon from 'react-native-vector-icons/Entypo';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
 import { imageBanner } from '../MockData/ImageSlider';
+import AccountCircleIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CARD_SPACING = 16;
 const { width } = Dimensions.get('window');
-// const CARD_WIDTH = (width - (CARD_SPACING * (NUM_COLUMNS + 1))) / NUM_COLUMNS;
+
 const CARD_WIDTH = (width - CARD_SPACING * 3) / 2;
 
 type CardScreenProps = NativeStackScreenProps<RootStackParamList, 'CardScreen'>;
 
-const CardList: React.FC<CardScreenProps> = ({ navigation, route }) => {
-  console.log("harshit")
+const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
   const gridData = cardData.slice(0, 9);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -41,17 +41,12 @@ const CardList: React.FC<CardScreenProps> = ({ navigation, route }) => {
             <ArrowDownIcon name="down" size={18} color="black" />
           </View>
 
-          {/* Right side: Circle with H */}
-          <View style={{
-            height: 30,
-            width: 30,
-            borderRadius: 15,
-            backgroundColor: "#1F41BB",
-            justifyContent: "center",
-            alignItems: "center"
-          }}>
-            <Text style={{ color: "white", fontWeight: "500" }}>H</Text>
-          </View>
+          {/* Right side: Account Icon */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AccountScreen")}
+          >
+            <AccountCircleIcon name="account-circle-outline" size={30} color="black" />
+          </TouchableOpacity>
 
         </View>
 
@@ -73,14 +68,12 @@ const CardList: React.FC<CardScreenProps> = ({ navigation, route }) => {
               <SearchIcon name="search" size={15} color="black" style={{ marginRight: 2 }} />
               <TextInput
                 style={{ flex: 1 }}
+                editable={false}
                 placeholder="Search"
               />
             </View>
           </View>
         </View>
-
-
-
 
         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 16, alignItems: "center", marginBottom: 10 }}>
           <Text style={styles.headerTitle}>Recommended Items</Text>
@@ -89,7 +82,6 @@ const CardList: React.FC<CardScreenProps> = ({ navigation, route }) => {
             <ArrowRightIcon name="arrowright" size={20} color="white" />
           </TouchableOpacity>
         </View>
-
 
         <View style={styles.gridWrapper} >
           {gridData.map((item) => (
@@ -111,28 +103,26 @@ const CardList: React.FC<CardScreenProps> = ({ navigation, route }) => {
           ))}
         </View>
 
-
-
-
         <View style={styles.imageCardContainer}>
           <Text style={styles.imageCardTitle}>Stock up on essentials!</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             style={{ zIndex: 1 }}
-            contentContainerStyle={{ paddingVertical: 25 }}
+            
           >
-            {productCardData.map((item) => (
+            {cardData.map((item) => (
               <TouchableOpacity
                 key={item.id}
-                onPress={() => navigation.navigate("WelcomeScreen")}
+                onPress={() => navigation.navigate("CardDetailScreen", { cardData: item })}
               // style={styles.essentialsCard}
               >
                 {/* <Text>Hello</Text> */}
-                <ShopCard {...item}
+                <ShopCard
+                  {...item}
+                  priceText={item.price}
                   cardWidth={width * 0.5}
                   imageHeight={100}
-
                 />
               </TouchableOpacity>
             ))}
@@ -168,12 +158,8 @@ const CardList: React.FC<CardScreenProps> = ({ navigation, route }) => {
         <View style={styles.popularPicksContainer}>
           <Text style={styles.imageCardTitle}>Popular Picks!</Text>
           <View style={styles.smallPopularPicksContainer}>
-            <FlatList
-              data={popularPickData.slice(0, 4)}
-              keyExtractor={(item) => item.id.toString()}
-              numColumns={2}
-              columnWrapperStyle={{ justifyContent: 'space-evenly' }}
-              renderItem={({ item }) => (
+            <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly',paddingTop:10}}>
+              {cardData.slice(0, 4).map((item) => (
                 <TouchableOpacity
                   key={item.id}
                   style={styles.popularCardWrapper}
@@ -182,30 +168,32 @@ const CardList: React.FC<CardScreenProps> = ({ navigation, route }) => {
                   <ShopCard
                     image={item.image}
                     title={item.title}
-                    priceText={item.priceText}
+                    priceText={item.price}
                     imageHeight={160}
                     cardWidth={130}
                   />
                 </TouchableOpacity>
-              )}
-              contentContainerStyle={{ padding: 0 }}
-              showsVerticalScrollIndicator={false}
-            />
+           ))}
+            </View>
           </View>
         </View>
-
-
 
         <View style={styles.imageCardContainer}>
           <Text style={styles.imageCardTitle}>Monday deals!</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {productCardData.map((item) => (
+            {cardData.map((item) => (
               <TouchableOpacity
                 key={item.id}
                 onPress={() => navigation.navigate("CardDetailScreen", { cardData: item })}
-                style={{ marginRight: 12 }}
+                
               >
-                <ShopCard {...item} />
+                <ShopCard
+                    {...item}
+                  priceText={item.price}
+                  cardWidth={width * 0.5}
+                  imageHeight={100}
+                
+                 />
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -268,7 +256,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     fontFamily: 'Poppins',
     color: 'black',
-    marginBottom: 18,
+    marginBottom: 38,
     marginTop: 4,
   },
   shopCardWrapper: {
@@ -325,7 +313,6 @@ const styles = StyleSheet.create({
     padding: CARD_SPACING / 2,
   },
 
-
   locationText: {
     color: "#494949",
     fontSize: 12,
@@ -336,14 +323,6 @@ const styles = StyleSheet.create({
   popularCardWrapper: {
     marginBottom: 15,
     borderRadius: 10,
-    // backgroundColor: 'red',
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.1,
-    // shadowRadius: 4,
-    // elevation: 3,
-    // overflow: 'hidden',
-    // Remove width here, set via cardWidth prop
     marginHorizontal: 4, // Add horizontal margin for spacing
   },
 

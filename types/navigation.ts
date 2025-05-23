@@ -5,4 +5,6 @@ export type RootStackParamList = {
   CardScreen: undefined;
   TestScreen: undefined;
   CardDetailScreen: { cardData: any };
+  CartItemsScreen: undefined;
+  AccountScreen: undefined;
 }; 

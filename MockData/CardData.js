@@ -2,18 +2,22 @@
 export const cardData = [
   {
     id: 1,
-    title: 'US POLO ASSN',
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    title: 'Moiz Xi Cream 500 gm',
+    brand: 'Cadila Pharmaceuticals Ltd',
+    category:'Skin Care',
+    image: 'https://dermatics.in/cdn/shop/files/61pMzdSeYRL._SL1500.webp?v=1735363481&width=713',
     images:[
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1624814448264-f2273a961d33?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1624814448264-f2273a961d33?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1624814448264-f2273a961d33?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+      'https://m.media-amazon.com/images/I/51+2XBGUG7L._SY679_.jpg',
+      'https://dermatics.in/cdn/shop/files/61pMzdSeYRL._SL1500.webp?v=1735363481&width=713',
+      'https://m.media-amazon.com/images/I/51+2XBGUG7L._SY679_.jpg',
+      'https://dermatics.in/cdn/shop/files/61pMzdSeYRL._SL1500.webp?v=1735363481&width=713',
     ],
     rating: 4.5,
-    price: '₹2,099',
+    price: '₹2,0999',
     originalPrice: '₹3,000',
-    label: 'Hot Deal',
+    discount: '30%',
+    label: 'Bottle of 500 gm',
+    size:"500 gm",
   },
   {
     id: 2,
@@ -71,6 +75,6 @@ export const cardData = [
     price: '₹1,499',
     originalPrice: '₹2,199',
     label: 'Limited Offer',
-  },
- 
+  }, 
 ];
+
