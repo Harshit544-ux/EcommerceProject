@@ -139,6 +139,8 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
             autoPlay={false}
             scrollAnimationDuration={0}
             loop={false}
+            resizeMode='contain'
+            
           />
           <TouchableOpacity style={styles.floatingShareButton} onPress={CustomShare}>
             <Icon name="share" size={20} color="#3187A2" opacity={0.9} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View, Dimensions, TextInput, SafeAreaView, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { FlatList, StyleSheet, View, Dimensions, TextInput, SafeAreaView, Text, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import Card from '../Component/Card';
 import { cardData } from '../MockData/CardData';
 import SearchIcon from 'react-native-vector-icons/FontAwesome';
@@ -14,6 +14,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
 import { imageBanner } from '../MockData/ImageSlider';
 import AccountCircleIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Searchbar from '../Component/Searchbar';
 
 const CARD_SPACING = 16;
 const { width } = Dimensions.get('window');
@@ -60,20 +61,19 @@ const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
             images={imageBanner}
             autoPlay={true}
             scrollAnimationDuration={0}
-            loop={false} />
+            loop={false} 
+            resizeMode='cover'
+            />
         </View>
-        <View style={{ alignItems: 'center', paddingVertical: 8 }}>
-          <View style={styles.searchInput}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <SearchIcon name="search" size={15} color="black" style={{ marginRight: 2 }} />
-              <TextInput
-                style={{ flex: 1 }}
+        <Pressable style={{ alignItems: 'center', paddingVertical: 8 }} onPress={() => navigation.navigate("SearchScreen")}>
+        
+              <Searchbar
+               placeholder="Search for medicines, brands..."
                 editable={false}
-                placeholder="Search"
-              />
-            </View>
-          </View>
-        </View>
+              
+               />
+          
+        </Pressable>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 16, alignItems: "center", marginBottom: 10 }}>
           <Text style={styles.headerTitle}>Recommended Items</Text>
