@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ArrowLeftIcon from "react-native-vector-icons/AntDesign";
 import CancelIcon from "react-native-vector-icons/Entypo"
 import { useDispatch, useSelector } from "react-redux";
-import { increaseQuantity, decreaseQuantity, removeFromCart } from "../src/slices/cartSlice";
+import { increaseQuantity, decreaseQuantity, removeFromCart, selectCartTotal } from "../src/slices/cartSlice";
 import PlusIcon from 'react-native-vector-icons/AntDesign';
 import MinusIcon from 'react-native-vector-icons/AntDesign';
 import CustomButton from "../Component/CustomButton";
@@ -30,10 +30,10 @@ const CartItemScreen = () => {
     const cartItems = useSelector((state: any) => state.cart.items);
     const [showRemoveModal, setShowRemoveModal] = useState(false);
     const [itemToRemove, setItemToRemove] = useState<CartItem | null>(null);
+    const totalAmount = useSelector(selectCartTotal);
 
 
     // Handler for minus button
-
     const handleDecrease = (item: CartItem) => {
         if (item.quantity === 1) {
             setItemToRemove(item);
@@ -81,7 +81,7 @@ const CartItemScreen = () => {
                                     <Image
                                         source={{ uri: item.image }}
                                         style={styles.cartItemImage}
-                                        resizeMode="cover"
+                                        resizeMode="contain"
                                     />
                                     <View style={styles.cartItemTextContainer}>
                                         <Text style={styles.cartItemTitle}>
@@ -89,12 +89,12 @@ const CartItemScreen = () => {
                                         </Text>
                                         <Text style={styles.cartItemSubtitle}>{item.brand}</Text>
                                     </View>
-                                    <TouchableOpacity  
+                                    <TouchableOpacity
                                         onPress={() => {
                                             setItemToRemove(item);
                                             setShowRemoveModal(true);
                                         }}
-                                        style={{ position: "absolute", right: 10, top: 10,height:30,width:30,backgroundColor:"#fff",elevation:4,alignItems:"center",justifyContent:"center",borderRadius:50 }}
+                                        style={{ position: "absolute", right: 10, top: 10, height: 30, width: 30, backgroundColor: "#fff", elevation: 4, alignItems: "center", justifyContent: "center", borderRadius: 50 }}
                                     >
                                         <CancelIcon name="cross" size={20} color="black" />
                                     </TouchableOpacity>
@@ -142,55 +142,79 @@ const CartItemScreen = () => {
                                     </TouchableOpacity>
                                 </View>
 
-                               
+
                             </View>
 
                         </View>
                     </View>
                 )}
             />
+            <View style={styles.bottomBar}>
+                <Text style={styles.totalText}>Total: ₹{totalAmount.toFixed(2)}</Text>
+                <CustomButton
+                    text="Checkout"
+                    isActive={true}
+                    onPress={() => {
+                        // Add your checkout logic here
+                        console.log('Checkout pressed');
+                    }}
+                    style={{
+                        backgroundColor: '#1F41BB',
+                        borderRadius: 8,
+                        width: 150
 
+                    }}
+                    textStyle={{
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                    }}
+                />
 
-             {/* Modal for confirmation */}
-                                <Modal
-                                    visible={showRemoveModal}
-                                    transparent
-                                    animationType="fade"
-                                    onRequestClose={cancelRemove}
-                                >
-                                    <View style={{
-                                        flex: 1, justifyContent: 'flex-end', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)'
-                                    }}>
-                                        <View style={{
-                                            backgroundColor: 'white', padding: 20, alignItems: 'center', width: '100%', borderTopLeftRadius: 20, borderTopRightRadius: 20
-                                        }}>
-                                            <View style={{ flexDirection: "row", alignItems: "center",gap:58, marginBottom: 5 }}>
-                                                <Text style={{ fontSize: 18,fontFamily:"sans-serif" }}>Remove the item from your cart ?</Text>
+            </View>
 
-                                                <TouchableOpacity onPress={cancelRemove} style={{height:30,width:30,backgroundColor:"#fff",elevation:4,alignItems:"center",justifyContent:"center",borderRadius:50 }}>
-                                                    <CancelIcon name="cross" size={20} color="black" />
-                                                </TouchableOpacity>
-                                            </View>
-                                            <CustomButton 
-                                                text="Yes, remove" 
-                                                isActive={true} 
-                                                onPress={confirmRemove}
-                                                style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1, paddingHorizontal: 120, marginTop: 16 }]} 
-                                                textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }} 
-                                            />
-                                           
-                                                <CustomButton text="Cancel" 
-                                                isActive={true} 
-                                                onPress={cancelRemove}
-                                                style={[styles.cancelToCartButton, { marginTop: 8,borderColor: "#fd1207", borderWidth: 1, paddingHorizontal: 140 }]} 
-                                                textStyle={{ color: "#fd1207", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }} />
-                                          
-                                        </View>
-                                    </View>
-                                </Modal>
+            {/* Modal for confirmation */}
+            <Modal
+                visible={showRemoveModal}
+                transparent
+                animationType="fade"
+                onRequestClose={cancelRemove}
+            >
+                <View style={{
+                    flex: 1, justifyContent: 'flex-end', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)'
+                }}>
+                    <View style={{
+                        backgroundColor: 'white', padding: 20, alignItems: 'center', width: '100%', borderTopLeftRadius: 20, borderTopRightRadius: 20
+                    }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 58, marginBottom: 5 }}>
+                            <Text style={{ fontSize: 18, fontFamily: "sans-serif" }}>Remove the item from your cart ?</Text>
+
+                            <TouchableOpacity onPress={cancelRemove} style={{ height: 30, width: 30, backgroundColor: "#fff", elevation: 4, alignItems: "center", justifyContent: "center", borderRadius: 50 }}>
+                                <CancelIcon name="cross" size={20} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                        <CustomButton
+                            text="Yes, remove"
+                            isActive={true}
+                            onPress={confirmRemove}
+                            style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1, paddingHorizontal: 20, marginTop: 16 }]}
+                            textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
+                        />
+
+                        <CustomButton text="Cancel"
+                            isActive={true}
+                            onPress={cancelRemove}
+                            style={[styles.cancelToCartButton, { marginTop: 8, borderColor: "#fd1207", borderWidth: 1, paddingHorizontal: 140 }]}
+                            textStyle={{ color: "#fd1207", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }} />
+
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     )
 }
+
+
 
 export default CartItemScreen;
 
@@ -220,7 +244,7 @@ const styles = StyleSheet.create({
         width: "100%",
         gap: 18,
         marginTop: 10,
-        marginBottom: 20,
+        marginBottom: 10,
         // backgroundColor: "blue",
     },
     cartItemCountText: {
@@ -331,6 +355,28 @@ const styles = StyleSheet.create({
         borderColor: '#7CC1D7',
 
     },
+    // Add these styles:
+    bottomBar: {
+        //   position: "absolute",
+        //   bottom: 0,
+        //   left: 0,
+        //   right: 0,
+        backgroundColor: "#fff",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: 16,
+        borderTopWidth: 1,
+        borderColor: "#eee",
+        elevation: 10,
+
+    },
+    totalText: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "#222",
+    },
+
 })
 
 

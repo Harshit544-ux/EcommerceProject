@@ -22,7 +22,7 @@ const Searchbar = ({ placeholder ,editable,onChangeText,value}: SearchbarProps) 
                     editable={editable}
                     value={value}
                     onChangeText={onChangeText}
-                      underlineColorAndroid="transparent"
+                    underlineColorAndroid="transparent"
                     
                 />
             </View>
@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     paddingHorizontal: 10,
- 
     borderWidth: 0,
     overflow: 'hidden', 
     },

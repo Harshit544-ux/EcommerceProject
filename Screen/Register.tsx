@@ -4,9 +4,6 @@ import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
 import CustomInput from "../Component/CustomInput";
 import CustomButton from "../Component/CustomButton";
 
-
-
-
 const { width, height } = Dimensions.get('window');
 
 // Define the Props interface
@@ -23,7 +20,7 @@ const RegisterScreen: React.FC<Props> = ({navigation}) => {
                 <View style={styles.headerContainer}>
                     <Text style={styles.titleText}>Create Account</Text>
                     <Text style={styles.subtitleText}>
-                        Create an account so you can explore all{'\n'}the existing jobs
+                        Join us to manage your medicine needs with ease
                     </Text>
                 </View>
                 <View style={styles.inputContainer}>
@@ -36,7 +33,7 @@ const RegisterScreen: React.FC<Props> = ({navigation}) => {
                             isActive={true}
                             style={styles.signUpButton}
                             onPress={() => {
-                                navigation.navigate('CardScreen');
+                                navigation.navigate('BottomTab');
                             }}
                         />
                     </View>

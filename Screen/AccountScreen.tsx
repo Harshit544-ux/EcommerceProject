@@ -30,12 +30,12 @@ const AccountScreen = () => {
                 <AccountItem />
             </View>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5, marginHorizontal: 5 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 2, marginHorizontal: 2 }}>
                 <Text style={styles.term}>Term & Conditions</Text>
                 <Text style={{ color: "#888888" }}>v7.8.1</Text>
             </View>
 
-            <Text style={{ color: "red", fontWeight: "600", marginLeft: 20, marginTop: 5 }}>Logout</Text>
+            <Text style={{ color: "red", fontWeight: "500", marginLeft: 20, marginTop: 2}}>Logout</Text>
 
         </SafeAreaView>
     );
@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
     accountHeader: {
         flexDirection: 'row',
         backgroundColor: '#b3cee5',
-        width: '100%',
-        height: 120,
+                width: '100%',
+        height: 110,
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
         // paddingHorizontal: 20,

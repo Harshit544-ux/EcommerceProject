@@ -6,3 +6,4 @@ declare module 'react-native-vector-icons/Fontisto';
 declare module 'react-native-star-view';
 declare module 'react-native-progress/Bar';
 declare module 'react-native-vector-icons/MaterialCommunityIcons';
+declare module 'react-native-vector-icons/Feather'

@@ -13,7 +13,7 @@ const ShopCard: React.FC<ShopCardProps> = ({ image, title, priceText,cardWidth=1
   return (
     // <TouchableOpacity style={[styles.card,{width:cardWidth}]}>
     <View style={[styles.card,{width:cardWidth}]}>
-      <Image source={{ uri: image }} style={[styles.image,{height:imageHeight}]} />
+      <Image source={{ uri: image }} style={[styles.image,{height:imageHeight}]} resizeMode='contain' />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.price}>{priceText}</Text>
     </View>

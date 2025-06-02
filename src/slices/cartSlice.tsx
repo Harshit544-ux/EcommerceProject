@@ -10,7 +10,6 @@ interface CartState {
   items: CartItem[];
 }
 
-
 const initialState: CartState = {
   items: []
 };
@@ -41,8 +40,6 @@ const cartSlice = createSlice({
         state.items = state.items.filter(i => i.id !== action.payload);
       }
     },
-
-
     removeFromCart:(state,action)=>{
       console.log('Removing item with id:', action.payload);
       console.log('Current items:', state.items);
@@ -54,3 +51,11 @@ const cartSlice = createSlice({
 
 export const { addToCart, increaseQuantity, decreaseQuantity,removeFromCart } = cartSlice.actions;
 export default cartSlice.reducer;
+
+// Selector to get total amount
+export const selectCartTotal = (state: any) =>
+  state.cart.items.reduce(
+    (sum: number, item: any) =>
+      sum + Number(item.price?.toString().replace(/[^\d.]/g, "")) * (item.quantity || 1),
+    0
+  );

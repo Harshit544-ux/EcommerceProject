@@ -29,7 +29,6 @@ import { addToCart, increaseQuantity, decreaseQuantity } from '../src/slices/car
 import Share from 'react-native-share';
 import Snackbar from 'react-native-snackbar';
 
-
 const { width } = Dimensions.get('window');
 type Props = NativeStackScreenProps<RootStackParamList, 'CardDetailScreen'>;
 
@@ -46,6 +45,7 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
 
+  
   const CustomShare = async () => {
     const message = `🔥 Product: ${cardData.title}\n💰 Price: ${cardData.price}\n📅 Expiry: March 2028`;
     const shareOptions = {
@@ -139,8 +139,7 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
             autoPlay={false}
             scrollAnimationDuration={0}
             loop={false}
-            resizeMode='contain'
-            
+            resizeMode='contain'            
           />
           <TouchableOpacity style={styles.floatingShareButton} onPress={CustomShare}>
             <Icon name="share" size={20} color="#3187A2" opacity={0.9} />
@@ -444,7 +443,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   // image: {
-  //   width: '100%',
+  //   width: '100%',     
   //   height: '100%',
   // },
   infoContainer: {

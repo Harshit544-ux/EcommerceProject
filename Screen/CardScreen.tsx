@@ -1,12 +1,9 @@
 import React from 'react';
-import { FlatList, StyleSheet, View, Dimensions, TextInput, SafeAreaView, Text, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import {StyleSheet, View, Dimensions, SafeAreaView, Text, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import Card from '../Component/Card';
 import { cardData } from '../MockData/CardData';
-import SearchIcon from 'react-native-vector-icons/FontAwesome';
 import ArrowRightIcon from 'react-native-vector-icons/AntDesign';
 import ShopCard from '../Component/ShopCard';
-import { productCardData } from "../MockData/ShopCard";
-import { popularPickData } from "../MockData/PopularPickData"
 import ImageCarousel from '../Component/ImageCarousel';
 import ArrowDownIcon from 'react-native-vector-icons/AntDesign';
 import LocationPinIcon from 'react-native-vector-icons/Entypo';
@@ -15,15 +12,23 @@ import { RootStackParamList } from '../types/navigation';
 import { imageBanner } from '../MockData/ImageSlider';
 import AccountCircleIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Searchbar from '../Component/Searchbar';
+import { Image } from 'react-native';
+import Footer from '../Component/Footer';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 const CARD_SPACING = 16;
 const { width } = Dimensions.get('window');
 
 const CARD_WIDTH = (width - CARD_SPACING * 3) / 2;
 
+
+// Replace 'Home' with the correct screen name as defined in your RootStackParamList, e.g., 'CardScreen'
+// type CardScreenProps = BottomTabScreenProps<RootStackParamList, 'CardScreen'>;
+
+
 type CardScreenProps = NativeStackScreenProps<RootStackParamList, 'CardScreen'>;
 
-const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
+const CardList: React.FC<CardScreenProps> = ({ navigation,route}) => {
   const gridData = cardData.slice(0, 9);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -36,11 +41,11 @@ const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
         }}>
 
           {/* Left side: Location Info */}
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+          <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", gap: 5 }} onPress={()=>console.log('presss')  }>
             <LocationPinIcon name="location-pin" size={20} color="red" />
             <Text style={{ color: "black", fontWeight: "bold", fontSize: 18 }}>T-HUB</Text>
             <ArrowDownIcon name="down" size={18} color="black" />
-          </View>
+          </TouchableOpacity>
 
           {/* Right side: Account Icon */}
           <TouchableOpacity
@@ -51,7 +56,7 @@ const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
 
         </View>
 
-        <Text style={styles.locationText}>Knowledge City, Raidurgam, Hyderabad, T....</Text>
+        <Text style={styles.locationText}>Knowledge City, Raidurgam, Hyderabad, T....</Text> 
 
       </View>
       <ScrollView contentContainerStyle={styles.container}>
@@ -61,18 +66,18 @@ const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
             images={imageBanner}
             autoPlay={true}
             scrollAnimationDuration={0}
-            loop={false} 
+            loop={false}
             resizeMode='cover'
-            />
+          />
         </View>
         <Pressable style={{ alignItems: 'center', paddingVertical: 8 }} onPress={() => navigation.navigate("SearchScreen")}>
-        
-              <Searchbar
-               placeholder="Search for medicines, brands..."
-                editable={false}
-              
-               />
-          
+
+          <Searchbar
+            placeholder="Search for medicines, brands..."
+            editable={false}
+
+          />
+
         </Pressable>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 16, alignItems: "center", marginBottom: 10 }}>
@@ -109,15 +114,14 @@ const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
             horizontal
             showsHorizontalScrollIndicator={false}
             style={{ zIndex: 1 }}
-            
+
           >
             {cardData.map((item) => (
               <TouchableOpacity
                 key={item.id}
-                onPress={() => navigation.navigate("CardDetailScreen", { cardData: item })}
-              // style={styles.essentialsCard}
+               onPress={() => navigation.navigate("CardDetailScreen", { cardData: item })}      
               >
-                {/* <Text>Hello</Text> */}
+              
                 <ShopCard
                   {...item}
                   priceText={item.price}
@@ -129,36 +133,16 @@ const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
           </ScrollView>
         </View>
 
-
-        {/* <View style={styles.popularPicksContainer}>
-          <Text style={styles.imageCardTitle}>Popular Picks!</Text>
-          <View style={styles.smallPopularPicksContainer}>
-            <View style={styles.popularPicksGrid}>
-              {popularPickData.slice(0, 4).map((item) => (
-                <TouchableOpacity
-                  key={item.id}
-                  style={styles.popularCardWrapper}
-                  onPress={() => navigation.navigate("CardDetailScreen", { cardData: item })}
-                >
-                  <ShopCard
-                    image={item.image}
-                    title={item.title}
-                    priceText={item.priceText}
-                
-                    imageHeight={140}
-                    // cardWidth={(width - 56) / 2}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        </View> */}
-
+        {/* image banner */}
+        <Image
+          style={{ height: 140, width: '100%', marginTop: 20, borderRadius: 10 }}
+          source={{ uri: "https://img.freepik.com/free-vector/healthcare-template-design_23-2150742457.jpg" }}
+        />
 
         <View style={styles.popularPicksContainer}>
           <Text style={styles.imageCardTitle}>Popular Picks!</Text>
           <View style={styles.smallPopularPicksContainer}>
-            <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly',paddingTop:10}}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', paddingTop: 10 }}>
               {cardData.slice(0, 4).map((item) => (
                 <TouchableOpacity
                   key={item.id}
@@ -173,7 +157,69 @@ const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
                     cardWidth={130}
                   />
                 </TouchableOpacity>
-           ))}
+              ))}
+            </View>
+          </View>
+        </View>
+
+        <View style={{ marginTop: 20, marginBottom: 10 }}>
+          <Image
+            style={{
+              height: 140,
+              width: '100%',
+              borderRadius: 10,
+            }}
+            source={{
+              uri: "https://www.shutterstock.com/shutterstock/photos/2070312206/display_1500/stock-photo--d-basket-or-shopping-cart-icon-on-a-purple-backrgound-concept-for-online-shopping-d-render-2070312206.jpg"
+            }}
+            resizeMode="cover"
+          />
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: 140,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            pointerEvents="none"
+          >
+            <View
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.25)",
+                borderRadius: 14,
+                paddingVertical: 14,
+                paddingHorizontal: 24,
+                alignItems: "center",
+                maxWidth: "90%",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 22,
+                  fontWeight: "bold",
+                  fontFamily: "Poppins",
+                  textAlign: "center",
+                  marginBottom: 4,
+                  letterSpacing: 1,
+                }}
+              >
+                🛍️ Mega Sale is Live!
+              </Text>
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 15,
+                  fontFamily: "Poppins",
+                  textAlign: "center",
+                  lineHeight: 22,
+                }}
+              >
+                Shop your favorites at unbeatable prices.{"\n"}Hurry, deals won't last long!
+              </Text>
             </View>
           </View>
         </View>
@@ -185,19 +231,21 @@ const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
               <TouchableOpacity
                 key={item.id}
                 onPress={() => navigation.navigate("CardDetailScreen", { cardData: item })}
-                
               >
                 <ShopCard
-                    {...item}
+                  {...item}
                   priceText={item.price}
                   cardWidth={width * 0.5}
                   imageHeight={100}
-                
-                 />
+
+                />
               </TouchableOpacity>
             ))}
+
           </ScrollView>
         </View>
+
+         <Footer/>
       </ScrollView>
     </SafeAreaView>
   );
@@ -319,7 +367,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     marginBottom: 12,
   },
-  // ...existing code...
   popularCardWrapper: {
     marginBottom: 15,
     borderRadius: 10,

@@ -36,7 +36,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
                             text="Sign In"
                             isActive={true}
                             style={styles.signInButton}
-                            onPress={() => { navigation.navigate("CardScreen") }}
+                            onPress={() => { navigation.navigate("BottomTab") }}
                         />
                     </View>
                     <Text style={styles.createAccountText}>

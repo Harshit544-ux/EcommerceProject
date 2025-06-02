@@ -32,8 +32,8 @@ export default AccountItem;
 
 const styles = StyleSheet.create({
     listContainer: {
-        paddingVertical: 10,
+        paddingVertical: 5,
         width: '100%',
-        paddingHorizontal: 8,  
+        paddingHorizontal: 2,  
     }
 });
