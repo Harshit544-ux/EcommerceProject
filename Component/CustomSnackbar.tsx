@@ -58,7 +58,7 @@ export default CustomSnackbar;
 const styles = StyleSheet.create({
     container: {
         position: "absolute",
-        bottom: 30,
+        bottom: 10,
         left: 20,
         right: 20,
         backgroundColor: "#256825",

@@ -54,7 +54,7 @@ export default cartSlice.reducer;
 
 // Selector to get total amount
 export const selectCartTotal = (state: any) =>
-  state.cart.items.reduce(
+  state.cart.items.reduce( 
     (sum: number, item: any) =>
       sum + Number(item.price?.toString().replace(/[^\d.]/g, "")) * (item.quantity || 1),
     0

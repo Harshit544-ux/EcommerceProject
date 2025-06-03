@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity, Modal } from "react-native";
+import { View, StyleSheet, Text, Image, TouchableOpacity, Modal, Pressable } from "react-native";
 import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ArrowLeftIcon from "react-native-vector-icons/AntDesign";
@@ -10,6 +10,8 @@ import { increaseQuantity, decreaseQuantity, removeFromCart, selectCartTotal } f
 import PlusIcon from 'react-native-vector-icons/AntDesign';
 import MinusIcon from 'react-native-vector-icons/AntDesign';
 import CustomButton from "../Component/CustomButton";
+import Searchbar from "../Component/Searchbar";
+
 
 
 interface CartItem {
@@ -24,9 +26,19 @@ interface CartItem {
     quantity: number;
 }
 
-const CartItemScreen = () => {
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type RootStackParamList = {
+    SearchScreen: undefined;
+   
+};
+
+interface CartItemScreenProps {
+    navigation: NativeStackNavigationProp<RootStackParamList, 'SearchScreen'>;
+}
+
+const CartItemScreen = ({ navigation }: CartItemScreenProps) => {
     const dispatch = useDispatch();
-    const navigation = useNavigation();
     const cartItems = useSelector((state: any) => state.cart.items);
     const [showRemoveModal, setShowRemoveModal] = useState(false);
     const [itemToRemove, setItemToRemove] = useState<CartItem | null>(null);
@@ -54,7 +66,7 @@ const CartItemScreen = () => {
 
     // Handler for canceling removal
     const cancelRemove = () => {
-        setShowRemoveModal(false);
+        setShowRemoveModal(false);  
         setItemToRemove(null);
     };
 
@@ -66,112 +78,194 @@ const CartItemScreen = () => {
                 </TouchableOpacity>
                 <Text style={styles.cartHeaderText}>Cart</Text>
             </View>
-            <Text style={styles.cartItemCountText}>
-                {cartItems.length} item{cartItems.length !== 1 ? "s" : ""} in your cart
-            </Text>
-            <FlatList
-                data={cartItems}
-                keyExtractor={(item) => item.id.toString()}
-                contentContainerStyle={{ paddingBottom: 20 }}
-                renderItem={({ item }) => (
-                    <View style={styles.cartCardContainer}>
-                        <View style={styles.cartItemCard}>
-                            <View style={styles.cartItemCardDescription}>
-                                <View style={styles.cartItemRow}>
-                                    <Image
-                                        source={{ uri: item.image }}
-                                        style={styles.cartItemImage}
-                                        resizeMode="contain"
-                                    />
-                                    <View style={styles.cartItemTextContainer}>
-                                        <Text style={styles.cartItemTitle}>
-                                            {item.title}
-                                        </Text>
-                                        <Text style={styles.cartItemSubtitle}>{item.brand}</Text>
-                                    </View>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            setItemToRemove(item);
-                                            setShowRemoveModal(true);
-                                        }}
-                                        style={{ position: "absolute", right: 10, top: 10, height: 30, width: 30, backgroundColor: "#fff", elevation: 4, alignItems: "center", justifyContent: "center", borderRadius: 50 }}
-                                    >
-                                        <CancelIcon name="cross" size={20} color="black" />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            <View style={styles.cartItemCardPrice}>
-                                {/* Left: Price Info */}
-                                <View style={{ flex: 1 }}>
-                                    {/* MRP and Discount in one row */}
-                                    <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2 }}>
-                                        <Text style={{ color: "#666", fontSize: 13 }}>
-                                            MRP <Text style={{ textDecorationLine: "line-through" }}>{item.originalPrice}</Text>
-                                        </Text>
-                                        <Text style={{ color: "#2BB789", fontWeight: "bold", fontSize: 13, marginLeft: 8 }}>{item.discount}</Text>
-                                    </View>
-                                    {/* Price */}
-                                    <Text style={{ color: "#222", fontSize: 16 }}>
-                                        ₹{Number(item.price.replace(/[^\d]/g, "")) * (item.quantity || 1)}
-                                    </Text>
-                                    {/* Tube info */}
-                                    <Text style={{
-                                        backgroundColor: "#D3D3D3",
-                                        color: "#36454F",
-                                        fontSize: 10,
-                                        fontWeight: "500",
-                                        paddingVertical: 6,
-                                        paddingHorizontal: 12,
-                                        marginTop: 5,
-                                        borderRadius: 7,
-                                        marginLeft: -3,
-                                        alignSelf: "flex-start",
-                                        textAlign: "center",
-                                    }}>{item.size}</Text>
-                                </View>
-                                {/* Right: Add Quantity Button */}
-                                <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8, backgroundColor: "#1F41BB", borderRadius: 5, paddingVertical: 5, paddingHorizontal: 10 }}>
-                                    <TouchableOpacity onPress={() => handleDecrease(item)}>
-                                        <MinusIcon name="minus" size={20} color="white" />
-                                    </TouchableOpacity>
-                                    <Text style={{ fontSize: 16, color: "white", fontWeight: "bold" }}>
-                                        {item.quantity || 1}
-                                    </Text>
-                                    <TouchableOpacity onPress={() => dispatch(increaseQuantity(item.id))}>
-                                        <PlusIcon name="plus" size={20} color="white" />
-                                    </TouchableOpacity>
-                                </View>
 
+  <View style={{ flex: 1 }}>
+      {cartItems.length === 0 ? (
+        <View style={{ flex: 1, paddingTop: 10 }}>
+          {/* Searchbar */}
+          <Pressable onPress={() => navigation.navigate("SearchScreen")}>
+            <Searchbar placeholder="Search for medicines" editable={false} />
+          </Pressable>
 
-                            </View>
-
-                        </View>
-                    </View>
-                )}
+          {/* Empty Cart View */}
+          <View style={{ justifyContent: "center", marginLeft: 105, marginTop: 100 }}>
+            <Image
+              source={{ uri: "https://cdn-icons-png.flaticon.com/512/3225/3225209.png" }}
+              style={{ width: 150, height: 150, marginBottom: 20 }}
+              resizeMode="contain"
             />
-            <View style={styles.bottomBar}>
-                <Text style={styles.totalText}>Total: ₹{totalAmount.toFixed(2)}</Text>
-                <CustomButton
-                    text="Checkout"
-                    isActive={true}
-                    onPress={() => {
-                        // Add your checkout logic here
-                        console.log('Checkout pressed');
-                    }}
-                    style={{
-                        backgroundColor: '#1F41BB',
-                        borderRadius: 8,
-                        width: 150
+          </View>
+          <Text
+            style={{
+              fontSize: 18,
+              color: "#888",
+              fontFamily: "Poppins",
+              textAlign: "center",
+            }}
+          >
+            Your cart is empty
+          </Text>
+        </View>
+      ) : (
+        <>
+          <Text style={styles.cartItemCountText}>
+            {cartItems.length} item{cartItems.length !== 1 ? "s" : ""} in your cart
+          </Text>
 
-                    }}
-                    textStyle={{
-                        color: '#fff',
-                        fontWeight: 'bold',
-                        fontSize: 16,
-                    }}
-                />
+          <FlatList
+            data={cartItems}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={{ paddingBottom: 100 }}
+            renderItem={({ item }) => (
+              <View style={styles.cartCardContainer}>
+                <View style={styles.cartItemCard}>
+                  <View style={styles.cartItemCardDescription}>
+                    <View style={styles.cartItemRow}>
+                      <Image
+                        source={{ uri: item.image }}
+                        style={styles.cartItemImage}
+                        resizeMode="contain"
+                      />
+                      <View style={styles.cartItemTextContainer}>
+                        <Text style={styles.cartItemTitle}>{item.title}</Text>
+                        <Text style={styles.cartItemSubtitle}>{item.brand}</Text>
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setItemToRemove(item);
+                          setShowRemoveModal(true);
+                        }}
+                        style={{
+                          position: "absolute",
+                          right: 10,
+                          top: 10,
+                          height: 30,
+                          width: 30,
+                          backgroundColor: "#fff",
+                          elevation: 4,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: 50,
+                        }}
+                      >
+                        <CancelIcon name="cross" size={20} color="black" />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
 
-            </View>
+                  <View style={styles.cartItemCardPrice}>
+                    <View style={{ flex: 1 }}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          marginBottom: 2,
+                        }}
+                      >
+                        <Text style={{ color: "#666", fontSize: 13 }}>
+                          MRP{" "}
+                          <Text style={{ textDecorationLine: "line-through" }}>
+                            {item.originalPrice}
+                          </Text>
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#2BB789",
+                            fontWeight: "bold",
+                            fontSize: 13,
+                            marginLeft: 8,
+                          }}
+                        >
+                          {item.discount}
+                        </Text>
+                      </View>
+
+                      <Text style={{ color: "#222", fontSize: 16 }}>
+                        ₹
+                        {Number(item.price.replace(/[^\d]/g, "")) *
+                          (item.quantity || 1)}
+                      </Text>
+
+                      <Text
+                        style={{
+                          backgroundColor: "#D3D3D3",
+                          color: "#36454F",
+                          fontSize: 10,
+                          fontWeight: "500",
+                          paddingVertical: 6,
+                          paddingHorizontal: 12,
+                          marginTop: 5,
+                          borderRadius: 7,
+                          marginLeft: -3,
+                          alignSelf: "flex-start",
+                          textAlign: "center",
+                        }}
+                      >
+                        {item.size}
+                      </Text>
+                    </View>
+
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 10,
+                        marginBottom: 8,
+                        backgroundColor: "#1F41BB",
+                        borderRadius: 5,
+                        paddingVertical: 5,
+                        paddingHorizontal: 10,
+                      }}
+                    >
+                      <TouchableOpacity onPress={() => handleDecrease(item)}>
+                        <MinusIcon name="minus" size={20} color="white" />
+                      </TouchableOpacity>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: "white",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.quantity || 1}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => dispatch(increaseQuantity(item.id))}
+                      >
+                        <PlusIcon name="plus" size={20} color="white" />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            )}
+          />
+
+         
+          <View style={styles.bottomBar}>
+            <Text style={styles.totalText}>Total: ₹{totalAmount}</Text>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#1F41BB",
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                borderRadius: 8,
+              }}
+              onPress={() => {
+                // Handle checkout logic here
+              }}
+            >
+              <Text
+                style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}
+              >
+                Checkout
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
+    </View>
+{/* Removed misplaced block for cartItems.length > 0 */}
 
             {/* Modal for confirmation */}
             <Modal

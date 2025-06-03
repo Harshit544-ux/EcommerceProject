@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -28,6 +28,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, increaseQuantity, decreaseQuantity } from '../src/slices/cartSlice';
 import Share from 'react-native-share';
 import Snackbar from 'react-native-snackbar';
+// import CardDetailSkeleton from '../Skeleton/CardDetailSkeleton';
+
 
 const { width } = Dimensions.get('window');
 type Props = NativeStackScreenProps<RootStackParamList, 'CardDetailScreen'>;
@@ -44,7 +46,7 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const quantity = cartItem ? cartItem.quantity : 0;
   const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
-
+  const [isLoading,setIsLoading]=useState(true)
   
   const CustomShare = async () => {
     const message = `🔥 Product: ${cardData.title}\n💰 Price: ${cardData.price}\n📅 Expiry: March 2028`;
@@ -83,6 +85,18 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
     image: img,
   })) || [];
 
+  useEffect(()=>{
+    setTimeout(()=>{
+      setIsLoading(false)
+    },1500);
+  },[]);
+
+  // if(isLoading){
+  //   return <CardDetailSkeleton/>
+  // }
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -104,7 +118,7 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
                   position: 'absolute',
                   right: -9,
                   top: -10,
-                  backgroundColor: 'red',
+                  backgroundColor: '#1F41BB',
                   borderRadius: 10,
                   minWidth: 18,
                   height: 18,
@@ -171,55 +185,6 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
             <Text style={styles.discount}>70% off</Text>
           </View>
 
-          {/* <View style={{ flexDirection: "row", alignItems: "center", gap: 8, justifyContent: "space-between", marginVertical: 10 }}>
-            <Text style={[styles.price, { flex: 1 }]}>{cardData.price}</Text>
-            <View style={[styles.buttonContainer, { flex: 0, marginBottom: 0 }]}>
-              {quantity == 0 ? (
-                <CustomButton
-                  text="ADD"
-                  isActive={true}
-                  style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1 }]}
-                  textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
-                  onPress={() => {
-                    dispatch(addToCart(cardData));
-                    // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
-                  }} />
-              ) : (
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                  <Text style={{ fontSize: 16, fontFamily: "Poppins-Medium" }}>{quantity}</Text>
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                    <CustomButton
-                      text="-"
-                      isActive={true}
-                      style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1 }]}
-                      textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
-                      onPress={() => {
-                        dispatch(addToCart(cardData.id));
-                        // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
-                      }} />
-                    <CustomButton
-                      text="+"
-                      isActive={true}
-                      style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1 }]}
-                      textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
-                      onPress={() => {
-                        dispatch(addToCart(cardData.id));
-                        // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
-                      }} />
-                  </View>
-
-                  
-              {quantity > 0 && (
-                <Text style={{ color: "#222", fontWeight: "bold", marginTop: 4 }}>
-                  Total: ₹{Number(cardData.price.replace(/[^\d]/g, "")) * quantity}
-                </Text>
-              )}
-
-                </View>
-              )}
-        
-            </View>
-          </View> */}
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8, justifyContent: "space-between", marginVertical: 10 }}>
             {quantity > 0 && (
               <Text style={[styles.price, { flex: 1 }]}>₹{Number(cardData.price.replace(/[^\d]/g, "")) * quantity}</Text>
@@ -256,34 +221,7 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
               )}
             </View>
           </View>
-          {/* <CustomButton
-                text="ADD"
-                isActive={true}
-                style={[
-                  styles.addToCartButton,
-                  { borderColor: "#3187A2", borderWidth: 1, width: 120, paddingVertical: 10, paddingHorizontal: 0 }
-                ]}
-                textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
-                onPress={() => {
-                  dispatch(addToCart(cardData));
-                  // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
-                }}
-              /> */}
-          {/* Buttons */}
-          {/* <View style={styles.buttonContainer}>
-
-            <CustomButton
-              text="ADD"
-              isActive={true}
-              style={[styles.addToCartButton, { borderColor: "#3187A2", borderWidth: 1 }]}
-              textStyle={{ color: "#3187A2", fontWeight: "bold", fontSize: 16, fontFamily: "Poppins" }}
-              onPress={() => {
-                dispatch(addToCart(cardData));
-                // Alert.alert('Added to Cart', `You have added ${cardData.title} to your cart.`)
-              }} />
-
-          </View> */}
-
+         
           {/* Expiry Date */}
           <View
             style={{
@@ -442,10 +380,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
   },
-  // image: {
-  //   width: '100%',     
-  //   height: '100%',
-  // },
   infoContainer: {
     padding: 16,
   },
@@ -514,14 +448,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#DEEFF5',
     borderColor: '#7CC1D7',
   },
-  // buyNowButton: {
-  //   backgroundColor: '#fb641b',
-  // },
-  // buttonText: {
-  //   color: 'black',
-  //   fontWeight: 'bold',
-  //   marginLeft: 8,
-  // },
   detailsContainer: {
     borderWidth: 1,
     borderColor: '#eee',
@@ -550,7 +476,6 @@ const styles = StyleSheet.create({
   productGrowthContainer: {
     height: 50,
     width: '100%',
-    // backgroundColor: "#D3D3D3",
     backgroundColor: "#E0E0E0",
     flexDirection: 'row',
     justifyContent: 'center',
@@ -615,13 +540,10 @@ const styles = StyleSheet.create({
   reviewContainer: {
     marginTop: 20,
     padding: 8,
-    // backgroundColor: 'blue',
-    // borderRadius: 8,
     height: 210,
     borderWidth: 1,
     borderColor: '#eee',
     borderRadius: 6,
-    // marginTop: 16,
     backgroundColor: '#fff',
     overflow: 'hidden',
     elevation: 1,
@@ -641,11 +563,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     gap: 15,
-    // backgroundColor: '#fff',
-    // borderRadius: 6,
     marginTop: 10,
-    // elevation: 1,
-    // shadowColor: '#000',
   },
   verticalDivider: {
     width: 1,
@@ -657,7 +575,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#D3D3D3",
     color: "#36454F",
     padding: 4,
-    // marginVertical:9,
     marginBottom: 10,
     marginTop: 5,
     width: 120,

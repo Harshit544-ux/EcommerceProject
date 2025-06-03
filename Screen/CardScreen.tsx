@@ -14,21 +14,15 @@ import AccountCircleIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Searchbar from '../Component/Searchbar';
 import { Image } from 'react-native';
 import Footer from '../Component/Footer';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 const CARD_SPACING = 16;
 const { width } = Dimensions.get('window');
 
 const CARD_WIDTH = (width - CARD_SPACING * 3) / 2;
 
-
-// Replace 'Home' with the correct screen name as defined in your RootStackParamList, e.g., 'CardScreen'
-// type CardScreenProps = BottomTabScreenProps<RootStackParamList, 'CardScreen'>;
-
-
 type CardScreenProps = NativeStackScreenProps<RootStackParamList, 'CardScreen'>;
 
-const CardList: React.FC<CardScreenProps> = ({ navigation,route}) => {
+const CardList: React.FC<CardScreenProps> = ({navigation}) => {
   const gridData = cardData.slice(0, 9);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -53,7 +47,6 @@ const CardList: React.FC<CardScreenProps> = ({ navigation,route}) => {
           >
             <AccountCircleIcon name="account-circle-outline" size={30} color="black" />
           </TouchableOpacity>
-
         </View>
 
         <Text style={styles.locationText}>Knowledge City, Raidurgam, Hyderabad, T....</Text> 
@@ -70,14 +63,12 @@ const CardList: React.FC<CardScreenProps> = ({ navigation,route}) => {
             resizeMode='cover'
           />
         </View>
-        <Pressable style={{ alignItems: 'center', paddingVertical: 8 }} onPress={() => navigation.navigate("SearchScreen")}>
 
+        <Pressable style={{ alignItems: 'center', paddingVertical: 8 }} onPress={() => navigation.navigate("SearchScreen")}>
           <Searchbar
             placeholder="Search for medicines, brands..."
             editable={false}
-
           />
-
         </Pressable>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 16, alignItems: "center", marginBottom: 10 }}>
@@ -114,14 +105,12 @@ const CardList: React.FC<CardScreenProps> = ({ navigation,route}) => {
             horizontal
             showsHorizontalScrollIndicator={false}
             style={{ zIndex: 1 }}
-
           >
             {cardData.map((item) => (
               <TouchableOpacity
                 key={item.id}
                onPress={() => navigation.navigate("CardDetailScreen", { cardData: item })}      
               >
-              
                 <ShopCard
                   {...item}
                   priceText={item.price}
@@ -223,7 +212,7 @@ const CardList: React.FC<CardScreenProps> = ({ navigation,route}) => {
             </View>
           </View>
         </View>
-
+      
         <View style={styles.imageCardContainer}>
           <Text style={styles.imageCardTitle}>Monday deals!</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -244,7 +233,6 @@ const CardList: React.FC<CardScreenProps> = ({ navigation,route}) => {
 
           </ScrollView>
         </View>
-
          <Footer/>
       </ScrollView>
     </SafeAreaView>
@@ -290,7 +278,6 @@ const styles = StyleSheet.create({
     height: 300,
     width: '100%',
     backgroundColor: '#F1F4FF',
-    // backgroundColor: 'red',
     marginTop: 18,
     alignSelf: 'center',
     borderRadius: 20,
@@ -300,7 +287,6 @@ const styles = StyleSheet.create({
   },
   imageCardTitle: {
     fontSize: 22,
-    // backgroundColor:"blue",
     fontWeight: '800',
     fontFamily: 'Poppins',
     color: 'black',
@@ -370,7 +356,7 @@ const styles = StyleSheet.create({
   popularCardWrapper: {
     marginBottom: 15,
     borderRadius: 10,
-    marginHorizontal: 4, // Add horizontal margin for spacing
+    marginHorizontal: 4,
   },
 
 });

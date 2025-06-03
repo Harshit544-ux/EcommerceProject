@@ -4,40 +4,28 @@ import AllProductScreen from "../Screen/AllProductScreen";
 import TabletScreen from "../Screen/TabletScreen";
 import LotionScreen from "../Screen/LotionScreen";
 import { categoryImage } from "../MockData/CategoryImage";
-import { Text, View, Image, Pressable, Platform } from "react-native"
+import { Text, View, Image } from "react-native"
 
 const Tab = createMaterialTopTabNavigator();
 
-
-
-
-
-type TabLabel = "All" | "Tablet" | "Skincare";
+type TabLabel = "All" | "Medicine" | "Skincare";
 
 const tabIconMap: Record<TabLabel, string> = {
     All: categoryImage[0].image,
-    Tablet: categoryImage[1].image,
+    Medicine: categoryImage[1].image,
     Skincare: categoryImage[2].image,
 };
 
-
-
 const renderTabLabel = (label: TabLabel, focused: boolean): React.ReactElement => {
-
-
     return (
-
         <View style={{ alignItems: "center" }}>
             <View style={{
-                height: 80,
+                height: 56,
                 width: 80,
-
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: 50, // ✅ 80 / 2 = 40 to make it a circle
+                borderRadius: 50,
                 marginBottom: 4,
-                elevation: 0
-
             }
             }>
                 <Image
@@ -57,24 +45,19 @@ const renderTabLabel = (label: TabLabel, focused: boolean): React.ReactElement =
     );
 }
 
-
 const TopTabBar = () => {
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
-
                 tabBarLabel: ({ focused }) => renderTabLabel(route.name as TabLabel, focused),
                 tabBarIndicatorStyle: { backgroundColor: "#1F41BB" },
-                tabBarStyle: { backgroundColor: "white", height: 115 },
-
+                tabBarStyle: { backgroundColor: "white", height: 100 },
             })}
-
         >
             <Tab.Screen name="All" component={AllProductScreen} />
-            <Tab.Screen name="Tablet" component={TabletScreen} />
+            <Tab.Screen name="Medicine" component={TabletScreen} />
             <Tab.Screen name="Skincare" component={LotionScreen} />
         </Tab.Navigator>
     );
 }
-
 export default TopTabBar
