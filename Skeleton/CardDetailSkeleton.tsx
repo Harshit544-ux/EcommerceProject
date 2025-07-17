@@ -1,55 +1,59 @@
-// import React from 'react';
-// import { View, Dimensions, StyleSheet } from 'react-native';
-// import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import React from "react";
+import { Dimensions, ScrollView } from "react-native";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
-// const { width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-// const CardDetailSkeleton = () => {
-//   return (
-//     <SkeletonPlaceholder
-//       backgroundColor="#E1E9EE"
-//       highlightColor="#F2F8FC"
-//       speed={1200}
-//       direction="right" // 👈 horizontal left-to-right shimmer
-//     >
-//       <View style={styles.image} />
-//       <View style={styles.growth} />
-//       <View style={styles.title} />
-//       <View style={styles.label} />
-//       <View style={styles.row}>
-//         <View style={styles.ratingBox} />
-//         <View style={styles.reviewText} />
-//       </View>
-//       <View style={styles.row}>
-//         <View style={styles.price} />
-//         <View style={styles.discount} />
-//       </View>
-//       <View style={styles.button} />
-//       <View style={styles.expiry} />
-//       <View style={styles.description} />
-//       <View style={styles.highlight} />
-//       <View style={styles.highlight} />
-//       <View style={styles.highlight} />
-//       <View style={styles.reviews} />
-//     </SkeletonPlaceholder>
-//   );
-// };
+const CardDetailSkeleton = () => {
+  return (
+    <ScrollView style={{ flex: 1, padding: 16 }}>
+      <SkeletonPlaceholder borderRadius={4}>        
+        <SkeletonPlaceholder.Item width={width - 32} height={300} borderRadius={8} marginBottom={20} />
 
-// const styles = StyleSheet.create({
-//   image: { width: width, height: 300, marginBottom: 16 },
-//   growth: { width: '100%', height: 50, marginBottom: 16 },
-//   title: { width: '80%', height: 24, marginBottom: 8 },
-//   label: { width: 120, height: 24, marginBottom: 16 },
-//   row: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
-//   ratingBox: { width: 60, height: 24, marginRight: 8 },
-//   reviewText: { width: 100, height: 16 },
-//   price: { width: 100, height: 24, marginRight: 8 },
-//   discount: { width: 60, height: 16 },
-//   button: { width: '100%', height: 48, borderRadius: 8, marginBottom: 16 },
-//   expiry: { width: '100%', height: 56, borderRadius: 4, marginBottom: 16 },
-//   description: { width: '100%', height: 120, borderRadius: 6, marginBottom: 16 },
-//   highlight: { width: '100%', height: 16, marginBottom: 8 },
-//   reviews: { width: '100%', height: 200, borderRadius: 6 },
-// });
+        <SkeletonPlaceholder.Item width={200} height={20} marginBottom={10} />
 
-// export default CardDetailSkeleton;
+        <SkeletonPlaceholder.Item width={120} height={18} marginBottom={12} />
+  
+        <SkeletonPlaceholder.Item flexDirection="row" alignItems="center" marginBottom={10}>
+          <SkeletonPlaceholder.Item width={50} height={24} borderRadius={4} />
+          <SkeletonPlaceholder.Item width={100} height={14} borderRadius={4} marginLeft={10} />
+        </SkeletonPlaceholder.Item>
+     
+        <SkeletonPlaceholder.Item flexDirection="row" justifyContent="space-between" marginBottom={14}>
+          <SkeletonPlaceholder.Item width={80} height={20} />
+          <SkeletonPlaceholder.Item width={50} height={20} />
+        </SkeletonPlaceholder.Item>
+        
+        <SkeletonPlaceholder.Item width={120} height={40} borderRadius={6} marginBottom={20} />
+
+        {/* Expiry Date Box */}
+        <SkeletonPlaceholder.Item width={width - 32} height={50} borderRadius={6} marginBottom={16} />
+
+        {/* Accordion Header */}
+        <SkeletonPlaceholder.Item flexDirection="row" justifyContent="space-between" alignItems="center" marginBottom={8}>
+          <SkeletonPlaceholder.Item width={180} height={20} />
+          <SkeletonPlaceholder.Item width={20} height={20} />
+        </SkeletonPlaceholder.Item>
+    
+        <SkeletonPlaceholder.Item marginBottom={16}>
+          <SkeletonPlaceholder.Item width={width - 64} height={14} marginBottom={8} />
+          <SkeletonPlaceholder.Item width={width - 100} height={14} marginBottom={8} />
+          <SkeletonPlaceholder.Item width={width - 80} height={14} />
+        </SkeletonPlaceholder.Item>
+     
+        <SkeletonPlaceholder.Item width={160} height={20} marginBottom={10} />
+        {[1, 2, 3].map((_, i) => (
+          <SkeletonPlaceholder.Item key={i} width={width - 64} height={14} marginBottom={8} />
+        ))}
+
+        <SkeletonPlaceholder.Item width={160} height={20} marginTop={20} marginBottom={10} />
+        <SkeletonPlaceholder.Item flexDirection="row" justifyContent="space-between" alignItems="center">
+          <SkeletonPlaceholder.Item width={100} height={80} borderRadius={6} />
+          <SkeletonPlaceholder.Item width={180} height={80} borderRadius={6} />
+        </SkeletonPlaceholder.Item>
+      </SkeletonPlaceholder>
+    </ScrollView>
+  );
+};
+
+export default CardDetailSkeleton;
