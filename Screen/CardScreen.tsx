@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions, SafeAreaView, Text, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, View, Dimensions, SafeAreaView, Text, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import Card from '../Component/Card';
 import { cardData } from '../MockData/CardData';
 import ArrowRightIcon from 'react-native-vector-icons/AntDesign';
@@ -21,7 +21,7 @@ const CARD_WIDTH = (width - CARD_SPACING * 3) / 2;
 
 type CardScreenProps = NativeStackScreenProps<RootStackParamList, 'CardScreen'>;
 
-const CardList: React.FC<CardScreenProps> = ({navigation}) => {
+const CardList: React.FC<CardScreenProps> = ({ navigation }) => {
   const gridData = cardData.slice(0, 9);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -34,7 +34,7 @@ const CardList: React.FC<CardScreenProps> = ({navigation}) => {
         }}>
 
           {/* Left side: Location Info */}
-          <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", gap: 5 }} onPress={()=>console.log('presss')  }>
+          <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", gap: 5 }} onPress={() => console.log('presss')}>
             <LocationPinIcon name="location-pin" size={20} color="red" />
             <Text style={{ color: "black", fontWeight: "bold", fontSize: 18 }}>T-HUB</Text>
             <ArrowDownIcon name="down" size={18} color="black" />
@@ -48,7 +48,7 @@ const CardList: React.FC<CardScreenProps> = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.locationText}>Knowledge City, Raidurgam, Hyderabad, T....</Text> 
+        <Text style={styles.locationText}>Knowledge City, Raidurgam, Hyderabad, T....</Text>
 
       </View>
       <ScrollView contentContainerStyle={styles.container}>
@@ -108,7 +108,7 @@ const CardList: React.FC<CardScreenProps> = ({navigation}) => {
             {cardData.map((item) => (
               <TouchableOpacity
                 key={item.id}
-               onPress={() => navigation.navigate("CardDetailScreen", { cardData: item })}      
+                onPress={() => navigation.navigate("CardDetailScreen", { cardData: item })}
               >
                 <ShopCard
                   {...item}
@@ -211,7 +211,7 @@ const CardList: React.FC<CardScreenProps> = ({navigation}) => {
             </View>
           </View>
         </View>
-      
+
         <View style={styles.imageCardContainer}>
           <Text style={styles.imageCardTitle}>Monday deals!</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -232,7 +232,7 @@ const CardList: React.FC<CardScreenProps> = ({navigation}) => {
 
           </ScrollView>
         </View>
-         <Footer/>
+        <Footer />
       </ScrollView>
     </SafeAreaView>
   );
@@ -323,7 +323,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 12,
   },
-
   cardWrapper: {
     flex: 1,
     margin: 6,
@@ -345,7 +344,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: CARD_SPACING / 2,
   },
-
   locationText: {
     color: "#494949",
     fontSize: 12,
@@ -357,5 +355,4 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 4,
   },
-
 });

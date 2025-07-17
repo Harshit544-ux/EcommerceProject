@@ -2,10 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text, Alert, Dimensions, ScrollView } from 'react-native';
 import CustomButton from '../Component/CustomButton';
 import CustomInput from '../Component/CustomInput';
-
-
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
 
 const { width, height } = Dimensions.get('window');
 

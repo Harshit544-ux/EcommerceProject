@@ -14,7 +14,7 @@ const CARD_WIDTH = (width - CARD_SPACING * 3) / 2;
 const AllProductScreen = () => {
     const [snackbarVisible, setSnackbarVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const isFocused=useIsFocused();
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -57,14 +57,12 @@ const AllProductScreen = () => {
 
                         />
                     </View>
-
                 )}
                 contentContainerStyle={{
                     paddingHorizontal: CARD_SPACING,
                     paddingTop: 10,
                 }}
             />
-
             <CustomSnackbar
                 visible={snackbarVisible}
                 message="Item added to cart"

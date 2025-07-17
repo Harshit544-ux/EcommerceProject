@@ -23,12 +23,10 @@ const AccountScreen = () => {
                 <TouchableOpacity>
                     <Text style={styles.editText}>Edit</Text>
                 </TouchableOpacity>
-
             </View>
-
+            {/* Account Items */}
             <View>
                 <AccountItem />
-                
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 2, marginHorizontal: 2 }}>
@@ -36,7 +34,7 @@ const AccountScreen = () => {
                 <Text style={{ color: "#888888" }}>v7.8.1</Text>
             </View>
 
-            <Text style={{ color: "red", fontWeight: "500", marginLeft: 20, marginTop: 2}}>Logout</Text>
+            <Text style={{ color: "red", fontWeight: "500", marginLeft: 20, marginTop: 2 }}>Logout</Text>
 
         </SafeAreaView>
     );
@@ -48,11 +46,10 @@ const styles = StyleSheet.create({
     accountHeader: {
         flexDirection: 'row',
         backgroundColor: '#b3cee5',
-                width: '100%',
+        width: '100%',
         height: 110,
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
-        // paddingHorizontal: 20,
         paddingHorizontal: 5,
         justifyContent: "flex-start",
         alignItems: 'center',
@@ -75,14 +72,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: 'sans-serif',
         color: 'black',
-        // marginVertical: 2,
     },
     nametext: {
         fontSize: 18,
         fontFamily: 'Poppins',
         color: 'black',
         marginBottom: 4,
-        // marginVertical: 2,
     },
     editText: {
         textDecorationLine: 'underline',

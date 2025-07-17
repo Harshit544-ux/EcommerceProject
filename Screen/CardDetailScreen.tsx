@@ -30,7 +30,6 @@ import Share from 'react-native-share';
 import Snackbar from 'react-native-snackbar';
 import CardDetailSkeleton from '../Skeleton/CardDetailSkeleton';
 
-
 const { width } = Dimensions.get('window');
 type Props = NativeStackScreenProps<RootStackParamList, 'CardDetailScreen'>;
 
@@ -46,8 +45,8 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const quantity = cartItem ? cartItem.quantity : 0;
   const [expanded, setExpanded] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
-  const [isLoading,setIsLoading]=useState(true)
-  
+  const [isLoading, setIsLoading] = useState(true);
+
   const CustomShare = async () => {
     const message = `🔥 Product: ${cardData.title}\n💰 Price: ${cardData.price}\n📅 Expiry: March 2028`;
     const shareOptions = {
@@ -56,12 +55,10 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
     }
     try {
       const shareResponse = await Share.open(shareOptions);
-      console.log("Share response", shareResponse);
     }
     catch (error) {
       console.log("Error sharing product", error);
     }
-
   }
   const toggleAccordion = () => {
     Animated.timing(animation, {
@@ -85,14 +82,14 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
     image: img,
   })) || [];
 
-  useEffect(()=>{
-    setTimeout(()=>{
+  useEffect(() => {
+    setTimeout(() => {
       setIsLoading(false)
-    },1500);
-  },[]);
+    }, 1500);
+  }, []);
 
-  if(isLoading){
-    return <CardDetailSkeleton/>
+  if (isLoading) {
+    return <CardDetailSkeleton />
   }
 
   return (
@@ -151,7 +148,7 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
             autoPlay={false}
             scrollAnimationDuration={0}
             loop={false}
-            resizeMode='contain'            
+            resizeMode='contain'
           />
           <TouchableOpacity style={styles.floatingShareButton} onPress={CustomShare}>
             <Icon name="share" size={20} color="#3187A2" opacity={0.9} />
@@ -219,7 +216,7 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
               )}
             </View>
           </View>
-         
+
           {/* Expiry Date */}
           <View
             style={{
@@ -464,7 +461,6 @@ const styles = StyleSheet.create({
   detailsTitle: {
     fontSize: 18,
     fontWeight: '600',
-    // marginBottom: 8,
   },
   description: {
     color: '#666',
