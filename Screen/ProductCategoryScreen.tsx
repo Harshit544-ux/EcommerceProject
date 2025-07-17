@@ -5,7 +5,8 @@ const ProductCategoryScreen = () => {
     return(
         <>
         <TopTabBar />
-        </>)
+        </>
+    )
 }
 
 export default ProductCategoryScreen;

@@ -11,14 +11,14 @@ interface CardProps {
   cardWidth: number;
 }
 
-const Card: React.FC<CardProps> = ({ 
-  title, 
-  image, 
-  rating, 
-  price, 
-  originalPrice, 
-  label, 
-  cardWidth 
+const Card: React.FC<CardProps> = ({
+  title,
+  image,
+  rating,
+  price,
+  originalPrice,
+  label,
+  cardWidth
 }) => {
   return (
     <View style={[styles.card, { width: cardWidth }]}>
@@ -42,13 +42,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
   },
- image: {
-  width: '100%',
-  height: 150, // aap chaaho to 200 se kam kar sakte ho
-  resizeMode: 'contain',
-  backgroundColor: '#f9f9f9', // optional: ek halka background bhi de sakte ho
-},
-
+  image: {
+    width: '100%',
+    height: 150, // aap chaaho to 200 se kam kar sakte ho
+    resizeMode: 'contain',
+    backgroundColor: '#f9f9f9', // optional: ek halka background bhi de sakte ho
+  },
   content: {
     padding: 8,
   },

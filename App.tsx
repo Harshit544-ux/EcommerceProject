@@ -66,6 +66,9 @@ import AccountItem from './Component/AccountItem';
 import BottomTabs from './Component/BottomTab';
 import SearchScreen from './Screen/SearchScreen';
 import ProductCard from './Component/ProductCard';
+import AddressTab from './Component/AddressTab';
+import AddressScreen from './Screen/AddressScreen';
+import CardDetailSkeleton from './Skeleton/CardDetailSkeleton';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -86,14 +89,24 @@ const App = () => {
         <Stack.Screen name="CartItemsScreen" component={CartItemScreen}/>
          <Stack.Screen name='AccountScreen' component={AccountScreen}/> 
          <Stack.Screen name='SearchScreen' component={SearchScreen}/>
-        
+        <Stack.Screen name='AddressScreen' component={AddressScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>
 
 
-    // <ProductCard/>
+  
 
+
+    // <NavigationContainer>
+    //    <AddressScreen/>
+    // </NavigationContainer>
+
+
+
+
+
+  // <CardDetailSkeleton/>
 
 
 

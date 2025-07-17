@@ -23,7 +23,6 @@ const Searchbar = ({ placeholder ,editable,onChangeText,value}: SearchbarProps) 
                     value={value}
                     onChangeText={onChangeText}
                     underlineColorAndroid="transparent"
-                    
                 />
             </View>
 

@@ -7,7 +7,6 @@ import PlusIcon from 'react-native-vector-icons/AntDesign';
 import MinusIcon from 'react-native-vector-icons/AntDesign';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-
 type ProductCardProps = {
     id: number
     image: string;
@@ -21,12 +20,9 @@ const ProductCard = ({ id, image, title, price, discount, onAddToCart }: Product
   
     const dispatch = useDispatch();
     const cartItems = useSelector((state: any) => state.cart.items)
-
     // Find the cart item for this product (assuming title is unique, otherwise use an id prop)
-      const item = cartItems.find((cartItem: any) => cartItem.id === id);
+    const item = cartItems.find((cartItem: any) => cartItem.id === id);
     const quantity = item ? item.quantity : 0;
-
-
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.productContainer}>
@@ -52,14 +48,11 @@ const ProductCard = ({ id, image, title, price, discount, onAddToCart }: Product
                             fontSize: 16,
                             fontFamily: "Poppins",
                         }}
-                        onPress={() => {
-                          
+                        onPress={() => {                          
                             dispatch(addToCart({ id, image, title, price, discount }));
                                onAddToCart();
-
                         }}
                     />
-
                 ) : (
                     <View style={{
                         flexDirection: "row",
@@ -67,7 +60,6 @@ const ProductCard = ({ id, image, title, price, discount, onAddToCart }: Product
                         backgroundColor: "#1F41BB",
                         borderRadius: 5,
                         paddingHorizontal: 14,
-
                     }}>
                         <TouchableOpacity
                             onPress={() => dispatch(decreaseQuantity(item.id))}
@@ -83,14 +75,11 @@ const ProductCard = ({ id, image, title, price, discount, onAddToCart }: Product
                             <PlusIcon name="plus" size={18} color="white" />
                         </TouchableOpacity>
                     </View>
-
                 )}
-
                 <View style={styles.offer}>
                     <Text style={styles.offerText}>{discount}</Text>
                     <Text style={styles.offerText}>OFF</Text>
                 </View>
-
             </View>
         </SafeAreaView>
 
@@ -99,20 +88,16 @@ const ProductCard = ({ id, image, title, price, discount, onAddToCart }: Product
 
 export default ProductCard;
 
-
 const styles = StyleSheet.create({
     productContainer: {
         height: 260,
         width: 160,
-
         borderRadius: 12,
         backgroundColor: "#fff",
         alignItems: "center",
         padding: 15,
         justifyContent: "space-between",
         position: 'relative',
-
-
         ...Platform.select({
             ios: {
                 shadowColor: "#000",

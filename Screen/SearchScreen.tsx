@@ -59,7 +59,6 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
 
                 </View>
 
-
                 <ScrollView keyboardShouldPersistTaps="handled" style={{ flex: 1 }}>
                     {/* Search Bar */}
                     <View style={{ padding: 10 }}>
@@ -147,8 +146,7 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
                                                         setTimeout(
                                                             ()=>{
                                                                 setSnackbarVisible(false);
-                                                            },2500);
-                                                        
+                                                            },2500);                                                        
                                                     }}
                                                 />
                                             ) : (
@@ -182,15 +180,13 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
                         )}
                     </View>
                 </ScrollView>
-
-                  {/* Add CustomSnackbar here */}
+       {/* Add CustomSnackbar here */}
             <CustomSnackbar 
                 visible={snackbarVisible}
                 message="Item added to cart!"
                 onDismiss={() => setSnackbarVisible(false)}
                 duration={2000}
             />
-
             </SafeAreaView>
         </>
     );
@@ -218,8 +214,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: "#eee",
         backgroundColor: "#fff",
-
-
     },
     resultImage: {
         width: 50,

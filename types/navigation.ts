@@ -10,4 +10,5 @@ export type RootStackParamList = {
   AccountScreen: undefined;
   SearchScreen: undefined;
   BottomTab: undefined;
+   AddressScreen:undefined;
 }; 

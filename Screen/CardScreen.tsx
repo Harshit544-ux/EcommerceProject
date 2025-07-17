@@ -17,7 +17,6 @@ import Footer from '../Component/Footer';
 
 const CARD_SPACING = 16;
 const { width } = Dimensions.get('window');
-
 const CARD_WIDTH = (width - CARD_SPACING * 3) / 2;
 
 type CardScreenProps = NativeStackScreenProps<RootStackParamList, 'CardScreen'>;

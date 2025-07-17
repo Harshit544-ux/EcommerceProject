@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
     listContainer: {
         paddingVertical: 5,
         width: '100%',
-        paddingHorizontal: 2,  
+        paddingHorizontal: 2,
     }
 });

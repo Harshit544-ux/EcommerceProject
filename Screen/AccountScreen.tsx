@@ -28,6 +28,7 @@ const AccountScreen = () => {
 
             <View>
                 <AccountItem />
+                
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 2, marginHorizontal: 2 }}>

@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, increaseQuantity, decreaseQuantity } from '../src/slices/cartSlice';
 import Share from 'react-native-share';
 import Snackbar from 'react-native-snackbar';
-// import CardDetailSkeleton from '../Skeleton/CardDetailSkeleton';
+import CardDetailSkeleton from '../Skeleton/CardDetailSkeleton';
 
 
 const { width } = Dimensions.get('window');
@@ -91,11 +91,9 @@ const CardDetailScreen: React.FC<Props> = ({ navigation, route }) => {
     },1500);
   },[]);
 
-  // if(isLoading){
-  //   return <CardDetailSkeleton/>
-  // }
-
-
+  if(isLoading){
+    return <CardDetailSkeleton/>
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -436,7 +434,6 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    // backgroundColor:"black",
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

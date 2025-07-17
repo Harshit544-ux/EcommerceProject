@@ -39,11 +39,6 @@ const RegisterScreen: React.FC<Props> = ({navigation}) => {
                     </View>
                     {/* <Text style={styles.loginText}>Already have an account</Text> */}
                 </View>
-                {/* <View style={styles.dividerContainer}>
-                    <Text style={styles.dividerText}>
-                        Or continue with
-                    </Text>
-                </View> */}
             </View>
         </ScrollView>
     );
