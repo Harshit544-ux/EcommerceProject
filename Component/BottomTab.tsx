@@ -1,84 +1,3 @@
-// import React from "react";
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// import CardList from "../Screen/CardScreen";
-// import CartItemScreen from "../Screen/CartItemsScreen";
-// import AccountScreen from "../Screen/AccountScreen";
-// import ProductCategoryScreen from "../Screen/ProductCategoryScreen";
-// import { Image } from "react-native";
-
-
-// type RootStackParamList = {
-//   CardScreen: undefined;
-//   Cart: undefined;
-//   Account: undefined;
-//   Category: undefined;
-// };
-
-// const Tab = createBottomTabNavigator<RootStackParamList>();
-
-
-// const BottomTabs=()=>(
-//     <Tab.Navigator
-//     screenOptions={({ route }: { route: { name: string } }) => ({
-//       headerShown: false,
-//       tabBarShowLabel: false,
-//       tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => {
-//         // let iconSource: any;
-//         // if (route.name === 'Home') {
-//         //   iconSource = require('./assets/home.png');
-//         // } else if (route.name === 'Category') {
-//         //   iconSource = require('./assets/categories.png');
-//         // } else if (route.name === 'Account') {
-//         //   iconSource = require('./assets/account.png');
-//         // }
-//         // else if(route.name==="Cart"){
-//         //     iconSource =require('./assets/shopping-cart.png')
-//         // }
-
-//             let iconName = '';
-
-//         if (route.name === 'Home') {
-//           iconName = 'home-outline';
-//         } else if (route.name === 'Category') {
-//           iconName = 'grid-outline';
-//         } else if (route.name === 'Account') {
-//           iconName = 'person-outline';
-//         } else if (route.name === 'Cart') {
-//           iconName = 'cart-outline';
-//         }
-
-//         interface TabBarIconProps {
-//           focused: boolean;
-//           color: string;
-//           size: number;
-//         }
-
-//         return (
-//           <Image
-
-//             style={{
-//               width: 28,
-//               height: 28,
-//               tintColor: focused ? '#1F41BB' : '#888', 
-//             }}
-//             resizeMode="contain"
-//           />
-//         );
-//       },
-//       tabBarActiveTintColor: '#1F41BB',
-//       tabBarInactiveTintColor: '#888',
-//     })}
-//   >
-//     <Tab.Screen name='CardScreen' component={CardList} />
-//     <Tab.Screen name="Cart" component={CartItemScreen} />
-//     <Tab.Screen name="Account" component={AccountScreen} />
-//     <Tab.Screen name="Category" component={ProductCategoryScreen} />
-//   </Tab.Navigator>
-// );
-
-// export default BottomTabs;
-
-
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CardList from "../Screen/CardScreen";
@@ -87,7 +6,6 @@ import AccountScreen from "../Screen/AccountScreen";
 import ProductCategoryScreen from "../Screen/ProductCategoryScreen";
 import { Image, Pressable ,Platform,Text,View} from "react-native";
 import { useSelector } from "react-redux";
-
 
 type RootStackParamList = {
   CardScreen: undefined;

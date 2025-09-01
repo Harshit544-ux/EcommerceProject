@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TextInput } from "react-native";
+import { StyleSheet,TextInput } from "react-native";
 
 const CustomInput: React.FC<{ placeholder: string; secureTextEntry?: boolean }> = ({ placeholder, secureTextEntry }) => {
   return (

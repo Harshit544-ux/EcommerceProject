@@ -162,7 +162,7 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
                                                         onPress={() => dispatch(decreaseQuantity(item.id))}
                                                         style={{ padding: 6 }}
                                                     >
-                                                        <MinusIcon name="minus" size={18} color="white" />
+                                                    <MinusIcon name="minus" size={18} color="white" />
                                                     </TouchableOpacity>
                                                     <Text style={{ marginHorizontal: 6, fontSize: 16, color: "white", fontWeight: "bold" }}>{quantity}</Text>
                                                     <TouchableOpacity

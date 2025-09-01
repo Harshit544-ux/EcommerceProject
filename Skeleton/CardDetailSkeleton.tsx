@@ -52,6 +52,7 @@ const CardDetailSkeleton = () => {
           <SkeletonPlaceholder.Item width={180} height={80} borderRadius={6} />
         </SkeletonPlaceholder.Item>
       </SkeletonPlaceholder>
+      
     </ScrollView>
   );
 };

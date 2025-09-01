@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { TouchableOpacity, StyleSheet, Text, View, Image, Platform } from "react-native";
 import CustomButton from "./CustomButton";
 import { addToCart, decreaseQuantity, increaseQuantity } from "../src/slices/cartSlice";

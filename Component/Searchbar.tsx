@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { View,TextInput, StyleSheet } from "react-native";
 import SearchIcon from 'react-native-vector-icons/FontAwesome';
 
 type SearchbarProps = {
